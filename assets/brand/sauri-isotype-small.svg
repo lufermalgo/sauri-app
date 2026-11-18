@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Sauri">
+  <defs>
+    <clipPath id="sauri-isotype-small-shape">
+      <rect x="0" y="0" width="100" height="100" rx="27"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#sauri-isotype-small-shape)">
+    <polygon fill="#9A8CE0" points="-10,-10 105.76,-10 54.88,40.88 50,36 36,50 40.88,54.88 -10,105.76"/>
+    <polygon fill="#6A5ACD" points="110,110 110,-5.76 59.12,45.12 64,50 50,64 45.12,59.12 -5.76,110"/>
+    <polygon fill="#C6FF24" points="50,36 64,50 50,64 36,50"/>
+  </g>
+</svg>

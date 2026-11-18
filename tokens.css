@@ -1,0 +1,167 @@
+/*
+ * Sauri design tokens (portal). Contract and rationale: DESIGN.md at the repo root.
+ *
+ * Every color is declared once as light-dark(<light>, <dark>). The theme follows
+ * prefers-color-scheme and can be forced with data-theme="light|dark" on <html>.
+ * The palette block is mirrored in extension/src/core/design/tokens.css; both files
+ * are checked against the DESIGN.md table by tokens.test.ts.
+ */
+:root,
+:host {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --ds-bg: light-dark(#faf9fe, #161223);
+  --ds-surface: light-dark(#ffffff, #1f1a33);
+  --ds-surface-raised: light-dark(#ffffff, #2a2342);
+  --ds-sidebar: light-dark(#f3f0fb, #1b162b);
+  --ds-fill: light-dark(#efebfa, #262040);
+  --ds-fill-hover: light-dark(#e6e0f7, #30294f);
+  --ds-fill-strong: light-dark(#dcd4f2, #3a325c);
+
+  /* Text and lines */
+  --ds-fg: light-dark(#161223, #eeeaf8);
+  --ds-fg-muted: light-dark(#4a4466, #b9b2d6);
+  --ds-fg-subtle: light-dark(#5e5880, #a9a1cc);
+  --ds-border: light-dark(#ddd7ee, #3a3158);
+  --ds-border-strong: light-dark(#7468a8, #8a7fc0);
+
+  /* Primary action and accent (lavender); spark is volt, only over nav-bg and dark surfaces */
+  --ds-accent: light-dark(#5b4bae, #6a5acd);
+  --ds-accent-hover: light-dark(#4b3c99, #5b4bae);
+  --ds-accent-fg: light-dark(#ffffff, #ffffff);
+  --ds-accent-text: light-dark(#4b3c99, #b3a8f2);
+  --ds-accent-soft: light-dark(#efebfb, #2a2342);
+  --ds-accent-soft-fg: light-dark(#3f3480, #dcd6f7);
+  --ds-accent-muted: light-dark(#9a8ce0, #6a5acd);
+  --ds-accent-line: light-dark(#5b4bae, #9a8ce0);
+  --ds-focus: light-dark(#5b4bae, #c6ff24);
+  --ds-spark: light-dark(#c6ff24, #c6ff24);
+  --ds-on-spark: light-dark(#161223, #161223);
+
+  /* Navigation panel: indigo in both themes */
+  --ds-nav-bg: light-dark(#161223, #100d1c);
+  --ds-nav-fg: light-dark(#b9b2d6, #b9b2d6);
+  --ds-nav-fg-strong: light-dark(#ffffff, #ffffff);
+  --ds-nav-active-bg: light-dark(#2a2342, #1f1a33);
+
+  /* Status */
+  --ds-warning: light-dark(#705c30, #d9bd7a);
+  --ds-warning-soft: light-dark(#f4e7c7, #3a3220);
+  --ds-warning-soft-fg: light-dark(#4d3f1c, #f0e0b4);
+  --ds-danger: light-dark(#b83230, #c9433f);
+  --ds-danger-hover: light-dark(#9d2a28, #b23a37);
+  --ds-danger-fg: light-dark(#ffffff, #ffffff);
+  --ds-danger-text: light-dark(#b83230, #ff9d97);
+  --ds-danger-soft: light-dark(#fce8e6, #43211f);
+  --ds-danger-soft-fg: light-dark(#690005, #ffc9c4);
+  --ds-recording: light-dark(#b83230, #f2736d);
+  --ds-highlight: light-dark(#eae4fb, #3a2f6b);
+  --ds-success: light-dark(#3b6a49, #8fc29d);
+  --ds-success-soft: light-dark(#c8e8d0, #243d2c);
+  --ds-success-soft-fg: light-dark(#1f4a2d, #bfe6cb);
+
+  /* Speakers: fills and text colors share one value per theme */
+  --ds-on-speaker: light-dark(#ffffff, #10201a);
+  --ds-speaker-1: light-dark(#4a7c59, #7fb58f);
+  --ds-speaker-2: light-dark(#9a5b2e, #d4955f);
+  --ds-speaker-3: light-dark(#3f6a8a, #7fb0d4);
+  --ds-speaker-4: light-dark(#7a4f7f, #c395c8);
+  --ds-speaker-5: light-dark(#8a6d1f, #cfae55);
+  --ds-speaker-6: light-dark(#2f7a74, #63bdb5);
+  --ds-speaker-unresolved: light-dark(#74796e, #a3a89b);
+
+  /* Scrims and elevation: only controls, menus and dialogs lift off the page */
+  --ds-scrim: light-dark(rgb(46 50 48 / 0.45), rgb(0 0 0 / 0.62));
+  --ds-scrim-strong: light-dark(rgb(32 36 33 / 0.78), rgb(0 0 0 / 0.8));
+  --ds-on-scrim: #ffffff;
+  --ds-shadow-sm: 0 1px 2px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5));
+  --ds-shadow-md: 0 1px 3px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5)),
+    0 8px 24px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5));
+
+  /* Typography */
+  --ds-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ds-text-2xs: 11px;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-md: 14px;
+  --ds-text-base: 14px;
+  --ds-text-lg: 15px;
+  --ds-text-xl: 16px;
+  --ds-text-2xl: 20px;
+  --ds-leading: 1.45;
+  --ds-leading-relaxed: 1.55;
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-semibold: 600;
+
+  /* Spacing, geometry and sizing */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-radius-xs: 4px;
+  --ds-radius-thumb: 6px;
+  --ds-radius-sm: 8px;
+  --ds-radius-card: 10px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-xl: 20px;
+  --ds-radius-pill: 9999px;
+  --ds-control-h-sm: 28px;
+  --ds-control-h-md: 32px;
+  --ds-control-h-lg: 36px;
+  --ds-icon-button-sm: 30px;
+  --ds-icon-button-md: 32px;
+  --ds-target: 32px;
+  --ds-icon-xs: 12px;
+  --ds-icon-sm: 14px;
+  --ds-icon-md: 16px;
+  --ds-icon-lg: 18px;
+
+  /* Focus and motion */
+  --ds-focus-width: 2px;
+  --ds-focus-offset: 2px;
+  --ds-duration: 150ms;
+  --ds-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout: desktop application panes (DESIGN.md 5 and 6) */
+  --ds-header-h: 48px;
+  --ds-sidebar-w: 220px;
+  --ds-rail-w: 60px;
+  --ds-nav-row-h: 32px;
+  --ds-list-w: 340px;
+  --ds-side-w: 380px;
+  --ds-z-sticky: 10;
+  --ds-z-menu: 20;
+}
+
+/* Touch screens get the large target; the desktop scale above stays compact (WCAG 2.2 AA asks 24px). */
+@media (pointer: coarse) {
+  :root {
+    --ds-control-h-sm: 44px;
+    --ds-control-h-md: 44px;
+    --ds-control-h-lg: 44px;
+    --ds-icon-button-sm: 44px;
+    --ds-icon-button-md: 44px;
+    --ds-nav-row-h: 44px;
+    --ds-target: 44px;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ds-duration: 0ms;
+  }
+}
