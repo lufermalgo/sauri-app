@@ -8,8 +8,11 @@
   <meta name="color-scheme" content="light dark">
   <link rel="icon" type="image/svg+xml" href="assets/brand/sauri-isotype-small.svg">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-  <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#faf9fe" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161223" media="(prefers-color-scheme: dark)">
+  <!-- Bump ?v= together with index.html whenever the stylesheets change. -->
+  <link rel="stylesheet" href="tokens.css?v=0.1.2-2">
+  <link rel="stylesheet" href="styles.css?v=0.1.2-2">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -22,11 +25,11 @@
           <img src="assets/brand/sauri-logo.svg" alt="" width="96" height="30">
         </picture>
       </a>
-      <nav class="site-nav" aria-label="Secciones">
+      <nav class="site-nav site-nav--always" aria-label="Idiomas">
         <a href="#es">Español</a>
         <a href="#en" hreflang="en" lang="en">English</a>
       </nav>
-      <a class="button button--soft button--sm" href="index.html">Volver al inicio</a>
+      <a class="button button--secondary button--sm button--back" href="index.html" aria-label="Volver al inicio">Inicio</a>
     </div>
   </header>
 
@@ -223,15 +226,20 @@
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <div class="site-footer__brand">
-        <img class="site-footer__mark" src="assets/brand/sauri-isotype.svg" alt="" width="28" height="28">
+        <img src="assets/brand/sauri-isotype.svg" alt="" width="32" height="32">
         <p>Sauri está en desarrollo. Hecha para Mac con chip de Apple.</p>
       </div>
-      <nav aria-label="Pie de página">
-        <a href="index.html">Inicio</a>
-        <a href="index.html#descargar">Descargar</a>
-        <a href="index.html#instalar">Instalar</a>
-        <a href="index.html#preguntas">Preguntas</a>
-        <a href="https://github.com/lufermalgo/sauri-app/issues">Ayuda</a>
+      <nav class="site-footer__nav" aria-label="Pie de página">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#descargar">Descargar</a></li>
+          <li><a href="index.html#instalar">Cómo instalarla</a></li>
+          <li><a href="index.html#preguntas">Preguntas</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://github.com/lufermalgo/sauri-app/issues">Ayuda</a></li>
+          <li><a href="https://github.com/lufermalgo/sauri-app/releases">Todas las versiones</a></li>
+        </ul>
       </nav>
     </div>
   </footer>
