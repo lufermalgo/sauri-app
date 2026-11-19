@@ -1,83 +1,79 @@
 /*
- * Sauri design tokens (portal). Contract and rationale: DESIGN.md at the repo root.
- *
- * Every color is declared once as light-dark(<light>, <dark>). The theme follows
- * prefers-color-scheme and can be forced with data-theme="light|dark" on <html>.
- * The palette block is mirrored in extension/src/core/design/tokens.css; both files
- * are checked against the DESIGN.md table by tokens.test.ts.
+ * Sauri design tokens for the landing. Same names and values as frontend/src/design/tokens.css (the
+ * DESIGN.md contract), but written as plain values for the light theme plus a prefers-color-scheme
+ * block for the dark one. The portal uses light-dark(); a public page cannot, because browsers older
+ * than Safari 17.5 / Chrome 123 drop every light-dark() declaration and the page would lose its colors.
+ * If the portal palette changes, update both blocks here.
  */
-:root,
-:host {
+:root {
   color-scheme: light dark;
-
   /* Surfaces */
-  --ds-bg: light-dark(#faf9fe, #161223);
-  --ds-surface: light-dark(#ffffff, #1f1a33);
-  --ds-surface-raised: light-dark(#ffffff, #2a2342);
-  --ds-sidebar: light-dark(#f3f0fb, #1b162b);
-  --ds-fill: light-dark(#efebfa, #262040);
-  --ds-fill-hover: light-dark(#e6e0f7, #30294f);
-  --ds-fill-strong: light-dark(#dcd4f2, #3a325c);
+  --ds-bg: #faf9fe;
+  --ds-surface: #ffffff;
+  --ds-surface-raised: #ffffff;
+  --ds-sidebar: #f3f0fb;
+  --ds-fill: #efebfa;
+  --ds-fill-hover: #e6e0f7;
+  --ds-fill-strong: #dcd4f2;
 
   /* Text and lines */
-  --ds-fg: light-dark(#161223, #eeeaf8);
-  --ds-fg-muted: light-dark(#4a4466, #b9b2d6);
-  --ds-fg-subtle: light-dark(#5e5880, #a9a1cc);
-  --ds-border: light-dark(#ddd7ee, #3a3158);
-  --ds-border-strong: light-dark(#7468a8, #8a7fc0);
+  --ds-fg: #161223;
+  --ds-fg-muted: #4a4466;
+  --ds-fg-subtle: #5e5880;
+  --ds-border: #ddd7ee;
+  --ds-border-strong: #7468a8;
 
   /* Primary action and accent (lavender); spark is volt, only over nav-bg and dark surfaces */
-  --ds-accent: light-dark(#5b4bae, #6a5acd);
-  --ds-accent-hover: light-dark(#4b3c99, #5b4bae);
-  --ds-accent-fg: light-dark(#ffffff, #ffffff);
-  --ds-accent-text: light-dark(#4b3c99, #b3a8f2);
-  --ds-accent-soft: light-dark(#efebfb, #2a2342);
-  --ds-accent-soft-fg: light-dark(#3f3480, #dcd6f7);
-  --ds-accent-muted: light-dark(#9a8ce0, #6a5acd);
-  --ds-accent-line: light-dark(#5b4bae, #9a8ce0);
-  --ds-focus: light-dark(#5b4bae, #c6ff24);
-  --ds-spark: light-dark(#c6ff24, #c6ff24);
-  --ds-on-spark: light-dark(#161223, #161223);
+  --ds-accent: #5b4bae;
+  --ds-accent-hover: #4b3c99;
+  --ds-accent-fg: #ffffff;
+  --ds-accent-text: #4b3c99;
+  --ds-accent-soft: #efebfb;
+  --ds-accent-soft-fg: #3f3480;
+  --ds-accent-muted: #9a8ce0;
+  --ds-accent-line: #5b4bae;
+  --ds-focus: #5b4bae;
+  --ds-spark: #c6ff24;
+  --ds-on-spark: #161223;
 
   /* Navigation panel: indigo in both themes */
-  --ds-nav-bg: light-dark(#161223, #100d1c);
-  --ds-nav-fg: light-dark(#b9b2d6, #b9b2d6);
-  --ds-nav-fg-strong: light-dark(#ffffff, #ffffff);
-  --ds-nav-active-bg: light-dark(#2a2342, #1f1a33);
+  --ds-nav-bg: #161223;
+  --ds-nav-fg: #b9b2d6;
+  --ds-nav-fg-strong: #ffffff;
+  --ds-nav-active-bg: #2a2342;
 
   /* Status */
-  --ds-warning: light-dark(#705c30, #d9bd7a);
-  --ds-warning-soft: light-dark(#f4e7c7, #3a3220);
-  --ds-warning-soft-fg: light-dark(#4d3f1c, #f0e0b4);
-  --ds-danger: light-dark(#b83230, #c9433f);
-  --ds-danger-hover: light-dark(#9d2a28, #b23a37);
-  --ds-danger-fg: light-dark(#ffffff, #ffffff);
-  --ds-danger-text: light-dark(#b83230, #ff9d97);
-  --ds-danger-soft: light-dark(#fce8e6, #43211f);
-  --ds-danger-soft-fg: light-dark(#690005, #ffc9c4);
-  --ds-recording: light-dark(#b83230, #f2736d);
-  --ds-highlight: light-dark(#eae4fb, #3a2f6b);
-  --ds-success: light-dark(#3b6a49, #8fc29d);
-  --ds-success-soft: light-dark(#c8e8d0, #243d2c);
-  --ds-success-soft-fg: light-dark(#1f4a2d, #bfe6cb);
+  --ds-warning: #705c30;
+  --ds-warning-soft: #f4e7c7;
+  --ds-warning-soft-fg: #4d3f1c;
+  --ds-danger: #b83230;
+  --ds-danger-hover: #9d2a28;
+  --ds-danger-fg: #ffffff;
+  --ds-danger-text: #b83230;
+  --ds-danger-soft: #fce8e6;
+  --ds-danger-soft-fg: #690005;
+  --ds-recording: #b83230;
+  --ds-highlight: #eae4fb;
+  --ds-success: #3b6a49;
+  --ds-success-soft: #c8e8d0;
+  --ds-success-soft-fg: #1f4a2d;
 
   /* Speakers: fills and text colors share one value per theme */
-  --ds-on-speaker: light-dark(#ffffff, #10201a);
-  --ds-speaker-1: light-dark(#4a7c59, #7fb58f);
-  --ds-speaker-2: light-dark(#9a5b2e, #d4955f);
-  --ds-speaker-3: light-dark(#3f6a8a, #7fb0d4);
-  --ds-speaker-4: light-dark(#7a4f7f, #c395c8);
-  --ds-speaker-5: light-dark(#8a6d1f, #cfae55);
-  --ds-speaker-6: light-dark(#2f7a74, #63bdb5);
-  --ds-speaker-unresolved: light-dark(#74796e, #a3a89b);
+  --ds-on-speaker: #ffffff;
+  --ds-speaker-1: #4a7c59;
+  --ds-speaker-2: #9a5b2e;
+  --ds-speaker-3: #3f6a8a;
+  --ds-speaker-4: #7a4f7f;
+  --ds-speaker-5: #8a6d1f;
+  --ds-speaker-6: #2f7a74;
+  --ds-speaker-unresolved: #74796e;
 
   /* Scrims and elevation: only controls, menus and dialogs lift off the page */
-  --ds-scrim: light-dark(rgb(46 50 48 / 0.45), rgb(0 0 0 / 0.62));
-  --ds-scrim-strong: light-dark(rgb(32 36 33 / 0.78), rgb(0 0 0 / 0.8));
+  --ds-scrim: rgb(46 50 48 / 0.45);
+  --ds-scrim-strong: rgb(32 36 33 / 0.78);
   --ds-on-scrim: #ffffff;
-  --ds-shadow-sm: 0 1px 2px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5));
-  --ds-shadow-md: 0 1px 3px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5)),
-    0 8px 24px light-dark(rgb(46 50 48 / 0.12), rgb(0 0 0 / 0.5));
+  --ds-shadow-sm: 0 1px 2px rgb(46 50 48 / 0.12);
+  --ds-shadow-md: 0 1px 3px rgb(46 50 48 / 0.12), 0 8px 24px rgb(46 50 48 / 0.12);
 
   /* Typography */
   --ds-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -139,25 +135,62 @@
   --ds-z-menu: 20;
 }
 
-/* Touch screens get the large target; the desktop scale above stays compact (WCAG 2.2 AA asks 24px). */
-@media (pointer: coarse) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --ds-control-h-sm: 44px;
-    --ds-control-h-md: 44px;
-    --ds-control-h-lg: 44px;
-    --ds-icon-button-sm: 44px;
-    --ds-icon-button-md: 44px;
-    --ds-nav-row-h: 44px;
-    --ds-target: 44px;
+    --ds-bg: #161223;
+    --ds-surface: #1f1a33;
+    --ds-surface-raised: #2a2342;
+    --ds-sidebar: #1b162b;
+    --ds-fill: #262040;
+    --ds-fill-hover: #30294f;
+    --ds-fill-strong: #3a325c;
+    --ds-fg: #eeeaf8;
+    --ds-fg-muted: #b9b2d6;
+    --ds-fg-subtle: #a9a1cc;
+    --ds-border: #3a3158;
+    --ds-border-strong: #8a7fc0;
+    --ds-accent: #6a5acd;
+    --ds-accent-hover: #5b4bae;
+    --ds-accent-text: #b3a8f2;
+    --ds-accent-soft: #2a2342;
+    --ds-accent-soft-fg: #dcd6f7;
+    --ds-accent-muted: #6a5acd;
+    --ds-accent-line: #9a8ce0;
+    --ds-focus: #c6ff24;
+    --ds-nav-bg: #100d1c;
+    --ds-nav-active-bg: #1f1a33;
+    --ds-warning: #d9bd7a;
+    --ds-warning-soft: #3a3220;
+    --ds-warning-soft-fg: #f0e0b4;
+    --ds-danger: #c9433f;
+    --ds-danger-hover: #b23a37;
+    --ds-danger-text: #ff9d97;
+    --ds-danger-soft: #43211f;
+    --ds-danger-soft-fg: #ffc9c4;
+    --ds-recording: #f2736d;
+    --ds-highlight: #3a2f6b;
+    --ds-success: #8fc29d;
+    --ds-success-soft: #243d2c;
+    --ds-success-soft-fg: #bfe6cb;
+    --ds-on-speaker: #10201a;
+    --ds-speaker-1: #7fb58f;
+    --ds-speaker-2: #d4955f;
+    --ds-speaker-3: #7fb0d4;
+    --ds-speaker-4: #c395c8;
+    --ds-speaker-5: #cfae55;
+    --ds-speaker-6: #63bdb5;
+    --ds-speaker-unresolved: #a3a89b;
+    --ds-scrim: rgb(0 0 0 / 0.62);
+    --ds-scrim-strong: rgb(0 0 0 / 0.8);
+    --ds-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
+    --ds-shadow-md: 0 1px 3px rgb(0 0 0 / 0.5), 0 8px 24px rgb(0 0 0 / 0.5);
   }
 }
 
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
+@media (pointer: coarse) {
+  :root {
+    --ds-target: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,13 +1,15 @@
 // Motion on the landing, always optional:
 // 1. The short product clip plays only for visitors who have not asked for reduced motion, and only while it is
 //    on screen. A visible button lets anyone pause it (WCAG 2.2.2).
-// 2. Blocks marked .reveal fade in once when they enter the screen. styles.css only hides them while the page
-//    has the .js class and the visitor accepts motion, so without JavaScript everything is visible.
+// 2. Blocks marked .reveal slide a few pixels into place once when they enter the screen. They are never
+//    hidden: styles.css only offsets them while the page has the .js class and the visitor accepts motion.
+// 3. The header menu marks the section being read.
 (function () {
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   document.querySelectorAll("video.motion").forEach(function (video) {
-    var toggle = video.parentElement.querySelector(".motion-toggle");
+    var scope = video.closest(".showcase__media") || video.parentElement;
+    var toggle = scope.querySelector(".motion-toggle");
     var paused = reduce.matches;
 
     function sync() {
@@ -40,49 +42,42 @@
     sync();
   });
 
+  // Blocks marked .reveal start a few pixels lower and slide into place once. Blocks already on screen when
+  // the page loads are settled at once, so nothing moves under the visitor's eyes on arrival.
   var blocks = document.querySelectorAll(".reveal");
   if (reduce.matches || !("IntersectionObserver" in window)) {
-    blocks.forEach(function (node) { node.classList.add("is-visible"); });
+    blocks.forEach(function (node) { node.classList.add("is-in"); });
   } else {
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
+        entry.target.classList.add("is-in");
         observer.unobserve(entry.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
     blocks.forEach(function (node) { observer.observe(node); });
   }
 
-  // «Cómo funciona»: three tabs (WAI-ARIA tabs pattern, vertical). Without JavaScript all panels stay visible.
-  document.querySelectorAll("[data-tour]").forEach(function (tour) {
-    var tabs = Array.prototype.slice.call(tour.querySelectorAll("[role=tab]"));
-    if (!tabs.length) return;
-
-    function select(index, focus) {
-      tabs.forEach(function (tab, i) {
-        var active = i === index;
-        var panel = document.getElementById(tab.getAttribute("aria-controls"));
-        tab.setAttribute("aria-selected", String(active));
-        tab.tabIndex = active ? 0 : -1;
-        if (panel) panel.hidden = !active;
-      });
-      if (focus) tabs[index].focus();
-    }
-
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener("click", function () { select(i, false); });
-      tab.addEventListener("keydown", function (event) {
-        var next = null;
-        if (event.key === "ArrowDown" || event.key === "ArrowRight") next = (i + 1) % tabs.length;
-        if (event.key === "ArrowUp" || event.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
-        if (event.key === "Home") next = 0;
-        if (event.key === "End") next = tabs.length - 1;
-        if (next === null) return;
-        event.preventDefault();
-        select(next, true);
-      });
+  // Header menu: mark the section being read.
+  document.querySelectorAll("[data-spy]").forEach(function (nav) {
+    if (!("IntersectionObserver" in window)) return;
+    var links = {};
+    nav.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      var section = document.getElementById(link.getAttribute("href").slice(1));
+      if (section) links[section.id] = link;
     });
-    select(0, false);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = links[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting) {
+          Object.keys(links).forEach(function (id) { links[id].classList.remove("is-current"); });
+          link.classList.add("is-current");
+        } else {
+          link.classList.remove("is-current");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    Object.keys(links).forEach(function (id) { spy.observe(document.getElementById(id)); });
   });
 })();

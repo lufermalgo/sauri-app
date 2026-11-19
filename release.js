@@ -1,7 +1,8 @@
 // Fills the download and extension blocks from the release config (#sauri-release) at the top of index.html.
-// A link is enabled only when its URL is a real https address; anything else keeps the safe default that the
-// HTML already shows («Disponible pronto» for the app, «En revisión» for the extension). The checksum, version
-// and file size are shown only when they are set and well formed.
+// The HTML works on its own: the download buttons point to the latest release on GitHub and the extension
+// shows «En revisión». With a real https downloadUrl the buttons download the file directly; with an empty or
+// placeholder one they are disabled and read «Disponible pronto». The extension becomes «Agregar a Chrome»
+// only with a real store URL. The checksum, version and file size are shown only when set and well formed.
 (function () {
   var config = {};
   try {
@@ -62,8 +63,6 @@
         note.append(guide, ".");
       });
     });
-    show("[data-download-badge]", true);
-    show("[data-download-badge-pending]", false);
 
     var meta = version ? "Versión " + version : "";
     if (fileSize) meta += meta ? " (" + fileSize + ")" : fileSize;
@@ -82,12 +81,20 @@
       each("[data-release-sha-value]", function (node) { node.textContent = sha; });
       show("[data-release-sha]", true);
     }
+  } else {
+    each("[data-download-url]", function (link) {
+      link.removeAttribute("href");
+      link.setAttribute("aria-disabled", "true");
+      var label = link.querySelector("[data-label]");
+      if (label) label.textContent = "Disponible pronto";
+    });
+    show("[data-download-badge]", false);
+    show("[data-download-badge-pending]", true);
   }
 
   if (releases) {
     each("[data-releases-url]", function (link) {
       link.href = releases;
-      link.hidden = false;
     });
   }
 
