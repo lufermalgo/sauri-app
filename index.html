@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    Release config: the only place to edit when a version is published (docs/design/landing.md, section 4).
+    Leave a value empty until it is real; never put a placeholder URL here.
+    - downloadUrl empty: every download button shows «Disponible pronto», disabled.
+    - chromeWebStoreUrl empty: the extension shows «En revisión en Chrome Web Store»; once it is set to the
+      real listing (https://chromewebstore.google.com/detail/inebachhkahcdepkbdkhchnpahladpnk) it becomes
+      an «Agregar a Chrome» button.
+    - sha256 empty or malformed: the checksum is hidden. fileSize is the size Finder shows for the .dmg.
+  -->
+  <script id="sauri-release" type="application/json">
+    {
+      "version": "0.1.2",
+      "downloadUrl": "https://github.com/lufermalgo/sauri-app/releases/download/v0.1.2/Sauri-0.1.2-mac-arm64.dmg",
+      "fileSize": "272 MB",
+      "sha256": "fdb20cc0987769332afce0cd4742706eecf7bcfe4d9ce6e14bdc085eac59e468",
+      "releasesUrl": "https://github.com/lufermalgo/sauri-app/releases",
+      "chromeWebStoreUrl": ""
+    }
+  </script>
+  <script>document.documentElement.classList.add("js");</script>
+  <title>Sauri · Tus reuniones, transcritas y resumidas en tu Mac</title>
+  <meta name="description" content="Sauri graba tus reuniones desde una pestaña de Chrome, reconoce quién habló y te deja un resumen en borrador para revisar. Todo se procesa en tu Mac. Para Mac con chip de Apple.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#faf9fe" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161223" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://lufermalgo.github.io/sauri-app/">
+  <meta property="og:title" content="Sauri · Tus reuniones, transcritas y resumidas en tu Mac">
+  <meta property="og:description" content="Graba desde Chrome, revisa quién habló y recibe un resumen en borrador. Todo se procesa en tu Mac.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_LA">
+  <meta property="og:url" content="https://lufermalgo.github.io/sauri-app/">
+  <!-- Open Graph needs an absolute URL; it is the only absolute asset path on the page. -->
+  <meta property="og:image" content="https://lufermalgo.github.io/sauri-app/assets/meeting-detail.png">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/sauri-isotype-small.svg">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preload" as="image" href="assets/meeting-detail.webp" type="image/webp">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- Icons: Lucide (ISC license, the icon set the portal already uses), inlined so the page loads nothing external. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol>
+      <symbol id="i-laptop" viewBox="0 0 24 24"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></symbol>
+      <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></symbol>
+      <symbol id="i-cpu" viewBox="0 0 24 24"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+      <symbol id="i-hard-drive" viewBox="0 0 24 24"><path d="M10 16h.01"/><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M21.946 12.013H2.054"/><path d="M6 16h.01"/></symbol>
+      <symbol id="i-memory" viewBox="0 0 24 24"><path d="M12 12v-2"/><path d="M12 18v-2"/><path d="M16 12v-2"/><path d="M16 18v-2"/><path d="M2 11h1.5"/><path d="M20 18v-2"/><path d="M20.5 11H22"/><path d="M4 18v-2"/><path d="M8 12v-2"/><path d="M8 18v-2"/><rect x="2" y="6" width="20" height="10" rx="2"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+      <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol>
+      <symbol id="i-models" viewBox="0 0 24 24"><path d="M12 2v8"/><path d="m16 6-4 4-4-4"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 18h.01"/><path d="M10 18h.01"/></symbol>
+      <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></symbol>
+      <symbol id="i-laptop-in" viewBox="0 0 24 24"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+      <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></symbol>
+      <clipPath id="mark-clip"><rect width="100" height="100" rx="30"/></clipPath>
+      <symbol id="sauri-mark" viewBox="0 0 100 100">
+        <g clip-path="url(#mark-clip)">
+          <polygon fill="#9A8CE0" points="-10,-10 108.3,-10 54.4,43.9 50,39.5 39.5,50 43.9,54.4 -10,108.3"/>
+          <polygon fill="#6A5ACD" points="110,110 110,-8.3 56.1,45.6 60.5,50 50,60.5 45.6,56.1 -8.3,110"/>
+          <polygon fill="#C6FF24" points="50,39.5 60.5,50 50,60.5 39.5,50"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="#inicio" aria-label="Sauri, ir al inicio">
+        <picture>
+          <source srcset="assets/brand/sauri-logo-dark.svg" media="(prefers-color-scheme: dark)">
+          <img src="assets/brand/sauri-logo.svg" alt="" width="96" height="30">
+        </picture>
+      </a>
+      <nav class="site-nav" aria-label="Secciones">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#privacidad">Privacidad</a>
+        <a href="#instalar">Instalar</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <a class="button button--ink button--sm" href="#descargar">
+        <svg class="button__icon" aria-hidden="true"><use href="#i-download"/></svg>Descargar
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="container hero__inner">
+        <p class="hero__badge">
+          <svg class="hero__badge-icon" aria-hidden="true"><use href="#i-laptop"/></svg>
+          Para Mac con chip de Apple
+        </p>
+        <h1 id="hero-title">Tus reuniones, transcritas y resumidas en tu Mac</h1>
+        <p class="lead">Graba desde Chrome, mira quién habló y recibe un resumen para revisar. Todo se procesa en tu Mac.</p>
+        <div class="hero__actions" data-download-group>
+          <div class="actions">
+            <a class="button button--ink button--lg" data-download-url data-ready-label="Descargar para Mac" aria-disabled="true">
+              <svg class="button__icon" aria-hidden="true"><use href="#i-download"/></svg><span data-label>Disponible pronto</span>
+            </a>
+            <a class="button button--soft button--lg" href="#instalar">Cómo instalarla</a>
+          </div>
+          <p class="hero__meta" data-release-meta hidden></p>
+          <p class="download-started" data-download-note role="status" aria-live="polite"></p>
+          <noscript><p class="hero__meta"><a href="https://github.com/lufermalgo/sauri-app/releases">Descargar desde la página de versiones</a></p></noscript>
+        </div>
+      </div>
+      <div class="container hero__visual">
+        <figure class="window reveal">
+          <div class="window__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <picture>
+            <source srcset="assets/meeting-detail.webp" type="image/webp">
+            <img src="assets/meeting-detail.png" width="1746" height="1091" fetchpriority="high"
+              alt="Una reunión abierta en Sauri: arriba el video con tres participantes, debajo la transcripción con cada hablante en un color y, a la derecha, el resumen con el asunto principal y los puntos clave.">
+          </picture>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona" aria-labelledby="steps-title">
+      <div class="container">
+        <header class="section__header">
+          <h2 id="steps-title">De la reunión al resumen, en tres pasos</h2>
+          <p class="section__intro">Tú grabas, Sauri hace el trabajo pesado y tú tienes la última palabra.</p>
+        </header>
+        <div class="tour" data-tour>
+          <div class="tour__list" role="tablist" aria-orientation="vertical" aria-label="Pasos">
+            <button class="tour__tab" type="button" role="tab" id="tour-tab-1" aria-controls="tour-panel-1" aria-selected="true">
+              <span class="tour__number" aria-hidden="true">1</span>
+              <span class="tour__body">
+                <span class="tour__title">Graba desde Chrome</span>
+                <span class="tour__text">Abre la extensión, elige la pestaña de la reunión y pulsa grabar. Funciona con Google Meet y con cualquier reunión que tengas abierta en el navegador.</span>
+              </span>
+            </button>
+            <button class="tour__tab" type="button" role="tab" id="tour-tab-2" aria-controls="tour-panel-2" aria-selected="false" tabindex="-1">
+              <span class="tour__number" aria-hidden="true">2</span>
+              <span class="tour__body">
+                <span class="tour__title">Revisa quién habló</span>
+                <span class="tour__text">Sauri separa las voces y pone cada intervención a nombre de su hablante. Si no reconoce una voz, la deja como «Hablante 2» hasta que tú le pongas nombre, y la próxima vez la recuerda.</span>
+              </span>
+            </button>
+            <button class="tour__tab" type="button" role="tab" id="tour-tab-3" aria-controls="tour-panel-3" aria-selected="false" tabindex="-1">
+              <span class="tour__number" aria-hidden="true">3</span>
+              <span class="tour__body">
+                <span class="tour__title">Revisa el resumen</span>
+                <span class="tour__text">Recibes un borrador con el asunto principal, los puntos clave y los próximos pasos. Tú lo lees, lo ajustas y decides qué compartir.</span>
+              </span>
+            </button>
+          </div>
+          <div class="tour__stage">
+            <div class="tour__panel" role="tabpanel" id="tour-panel-1" aria-labelledby="tour-tab-1" tabindex="0">
+              <figure class="tour__figure tour__figure--narrow">
+                <picture>
+                  <source srcset="assets/extension-panel.webp" type="image/webp">
+                  <img src="assets/extension-panel.png" width="800" height="580" loading="lazy"
+                    alt="Panel de la extensión de Sauri en Chrome, con el título «Grabar reunión» y el botón para empezar a grabar.">
+                </picture>
+              </figure>
+            </div>
+            <div class="tour__panel" role="tabpanel" id="tour-panel-2" aria-labelledby="tour-tab-2" tabindex="0">
+              <figure class="tour__figure">
+                <picture>
+                  <source srcset="assets/speakers.webp" type="image/webp">
+                  <img src="assets/speakers.png" width="1187" height="583" loading="lazy"
+                    alt="Panel de hablantes junto al video, con tres personas nombradas: Laura Méndez, Andrés Ríos y Sofía Vargas.">
+                </picture>
+              </figure>
+            </div>
+            <div class="tour__panel" role="tabpanel" id="tour-panel-3" aria-labelledby="tour-tab-3" tabindex="0">
+              <div class="tour__pair">
+                <figure class="tour__figure">
+                  <picture>
+                    <source srcset="assets/summary.webp" type="image/webp">
+                    <img src="assets/summary.png" width="486" height="987" loading="lazy"
+                      alt="Resumen de la reunión: asunto principal y puntos clave con marcas de tiempo.">
+                  </picture>
+                </figure>
+                <figure class="tour__figure">
+                  <picture>
+                    <source srcset="assets/summary-steps.webp" type="image/webp">
+                    <img src="assets/summary-steps.png" width="486" height="426" loading="lazy"
+                      alt="Final del resumen: próximos pasos con sus responsables y la conclusión de la reunión.">
+                  </picture>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tinted" id="funciones" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section__header">
+          <h2 id="features-title">Todo lo de la reunión, en un solo lugar</h2>
+        </header>
+        <div class="bento">
+          <article class="tile tile--wide reveal">
+            <div class="tile__text">
+              <h3>La transcripción sigue al video</h3>
+              <p>Mientras reproduces, la frase que se está diciendo se resalta. Haz clic en cualquier frase para saltar a ese momento.</p>
+            </div>
+            <figure class="tile__media">
+              <video class="motion" width="800" height="498" muted loop playsinline preload="none"
+                poster="assets/follow-poster.webp" aria-label="La transcripción resalta la frase que se dice mientras avanza el video.">
+                <source src="assets/follow.webm" type="video/webm">
+                <img src="assets/follow-poster.webp" width="800" height="498" alt="Una reunión en Sauri con la frase que se está diciendo resaltada en la transcripción.">
+              </video>
+              <button class="motion-toggle" type="button" hidden aria-pressed="false">Pausar animación</button>
+            </figure>
+          </article>
+          <article class="tile tile--library reveal">
+            <figure class="tile__media">
+              <picture>
+                <source srcset="assets/library.webp" type="image/webp">
+                <img src="assets/library.png" width="412" height="373" loading="lazy"
+                  alt="Biblioteca de Sauri con tres reuniones, cada una con su miniatura, fecha, duración y número de hablantes.">
+              </picture>
+            </figure>
+            <div class="tile__text">
+              <h3>Encuentra cualquier reunión</h3>
+              <p>Tu biblioteca ordena las grabaciones por fecha, con búsqueda y filtros.</p>
+            </div>
+          </article>
+          <article class="tile tile--upload reveal">
+            <figure class="tile__media">
+              <picture>
+                <source srcset="assets/upload.webp" type="image/webp">
+                <img src="assets/upload.png" width="917" height="369" loading="lazy"
+                  alt="Pantalla «Subir una grabación» con una zona para arrastrar el archivo y el botón «Elegir archivo».">
+              </picture>
+            </figure>
+            <div class="tile__text">
+              <h3>Sube grabaciones que ya tienes</h3>
+              <p>¿Grabaste con otra herramienta? Sube el archivo y Sauri lo procesa igual.</p>
+            </div>
+          </article>
+          <ul class="tile tile--list reveal">
+            <li><h3>Llévate lo que necesites</h3><p>Descarga el video, la transcripción o el resumen.</p></li>
+            <li><h3>Resúmenes a tu manera</h3><p>Crea plantillas para que cada tipo de reunión tenga el resumen que necesitas.</p></li>
+            <li><h3>Notas aparte</h3><p>Toma notas durante la grabación; quedan junto a la reunión, separadas de la transcripción.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--ink" id="privacidad" aria-labelledby="privacy-title">
+      <div class="container privacy">
+        <div class="privacy__lead">
+          <p class="eyebrow eyebrow--on-ink">Privacidad</p>
+          <h2 id="privacy-title">Tus reuniones se quedan contigo</h2>
+          <p class="section__intro">Sauri hace el trabajo pesado en tu Mac: transcribir, reconocer voces y resumir. No hace falta subir tus reuniones a la nube, ni crear una cuenta.</p>
+          <a class="link-arrow link-arrow--on-ink" href="privacidad.html">Lee la política de privacidad completa<svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        </div>
+        <ul class="privacy__list">
+          <li class="privacy__item reveal">
+            <svg class="icon-tile icon-tile--spark" aria-hidden="true"><use href="#i-laptop-in"/></svg>
+            <div>
+              <h3>Se queda en tu Mac</h3>
+              <p>Las grabaciones, las transcripciones, los resúmenes y los nombres que asignas a cada voz.</p>
+            </div>
+          </li>
+          <li class="privacy__item reveal">
+            <svg class="icon-tile icon-tile--spark" aria-hidden="true"><use href="#i-cloud"/></svg>
+            <div>
+              <h3>Sale solo si tú lo eliges</h3>
+              <p>Si prefieres que un servicio externo haga una tarea, por ejemplo el resumen, lo conectas tú y solo para esa tarea. Ese servicio recibe lo que necesita para hacerla.</p>
+            </div>
+          </li>
+          <li class="privacy__item reveal">
+            <svg class="icon-tile icon-tile--spark" aria-hidden="true"><use href="#i-bell"/></svg>
+            <div>
+              <h3>Te avisa antes</h3>
+              <p>Al activar un servicio externo, Sauri te muestra qué sale del equipo y hacia dónde, y te pide confirmarlo.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="descargar" aria-labelledby="download-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="eyebrow">Descargar</p>
+          <h2 id="download-title">Consigue Sauri</h2>
+          <p class="section__intro">Instala la app en tu Mac y agrega la extensión a Chrome para grabar tus reuniones. Después, Sauri busca versiones nuevas y te pregunta antes de instalarlas.</p>
+        </header>
+
+        <div class="get">
+          <article class="product reveal" data-download-group aria-labelledby="app-title">
+            <div class="product__top">
+              <svg class="icon-tile" aria-hidden="true"><use href="#i-laptop"/></svg>
+              <span class="badge badge--ok" data-download-badge hidden>Disponible</span>
+              <span class="badge badge--wait" data-download-badge-pending>Disponible pronto</span>
+            </div>
+            <h3 id="app-title" class="product__name">Sauri para Mac</h3>
+            <p class="product__meta">Mac con chip de Apple<span class="product__meta-extra" data-release-file hidden></span></p>
+            <div class="product__actions">
+              <a class="button button--ink" data-download-url data-ready-label="Descargar para Mac" aria-disabled="true">
+                <svg class="button__icon" aria-hidden="true"><use href="#i-download"/></svg><span data-label>Disponible pronto</span>
+              </a>
+              <a class="link-arrow" data-releases-url hidden>Todas las versiones<svg aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+            </div>
+            <p class="download-started" data-download-note role="status" aria-live="polite"></p>
+            <details class="product__sha" data-release-sha hidden>
+              <summary>Comprobar que el archivo es el original</summary>
+              <p>Esta es la huella SHA-256 del archivo. Si sabes usar la Terminal, compárala con la que da <code>shasum -a 256</code> sobre el archivo descargado.</p>
+              <code class="product__hash" data-release-sha-value></code>
+            </details>
+          </article>
+
+          <article class="product reveal" aria-labelledby="ext-title">
+            <div class="product__top">
+              <svg class="icon-tile" aria-hidden="true"><use href="#i-puzzle"/></svg>
+              <span class="badge badge--ok" data-store-ready hidden>Disponible</span>
+              <span class="badge badge--wait" data-store-pending>
+                <svg aria-hidden="true"><use href="#i-hourglass"/></svg>En revisión
+              </span>
+            </div>
+            <h3 id="ext-title" class="product__name">Extensión para Chrome</h3>
+            <p class="product__meta">Graba la pestaña de tu reunión y la envía a Sauri en tu Mac. Se conecta sola, sin correo ni contraseña.</p>
+            <div class="product__actions" data-store-ready hidden>
+              <a class="button button--ink" data-store-url>
+                <svg class="button__icon" aria-hidden="true"><use href="#i-puzzle"/></svg>Agregar a Chrome
+              </a>
+            </div>
+            <div class="notice" data-store-pending>
+              <p><strong>En revisión en Chrome Web Store, disponible pronto.</strong> Cuando la aprueben, aquí aparecerá el botón para agregarla a Chrome.</p>
+              <p>Mientras tanto, ya puedes instalar Sauri y usarla con grabaciones que tengas en tu Mac.</p>
+            </div>
+          </article>
+
+          <article class="needs reveal" aria-labelledby="needs-title">
+            <h3 id="needs-title">Qué necesitas</h3>
+            <ul class="needs__list">
+              <li><svg class="needs__icon" aria-hidden="true"><use href="#i-cpu"/></svg><span><strong>Un Mac con chip de Apple</strong> (M1 o posterior). No funciona en Mac con procesador Intel.</span></li>
+              <li><svg class="needs__icon" aria-hidden="true"><use href="#i-monitor"/></svg><span><strong>macOS 14 Sonoma o posterior.</strong></span></li>
+              <li><svg class="needs__icon" aria-hidden="true"><use href="#i-globe"/></svg><span><strong>Google Chrome</strong>, para grabar con la extensión.</span></li>
+              <li><svg class="needs__icon" aria-hidden="true"><use href="#i-hard-drive"/></svg><span><strong>Unos 10 GB libres.</strong> La app ocupa cerca de 1,4 GB y los modelos que se descargan la primera vez, hasta 8 GB más.</span></li>
+              <li><svg class="needs__icon" aria-hidden="true"><use href="#i-memory"/></svg><span><strong>8 GB de memoria o más.</strong> Con 16 GB o más los resúmenes son más completos.</span></li>
+            </ul>
+          </article>
+
+          <aside class="unsigned reveal" aria-labelledby="unsigned-title">
+            <svg class="icon-tile icon-tile--spark" aria-hidden="true"><use href="#i-shield-check"/></svg>
+            <h3 id="unsigned-title">Sauri aún no está verificada por Apple</h3>
+            <p>Por eso, la primera vez macOS te pide confirmar que quieres abrirla. Solo lo haces una vez.</p>
+            <a class="link-arrow link-arrow--on-ink" href="#instalar">Mira cómo abrirla<svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tinted" id="instalar" aria-labelledby="install-title">
+      <div class="container install">
+        <div class="install__intro">
+          <h2 id="install-title">Cómo abrirla la primera vez</h2>
+          <p class="section__intro">Sauri todavía no está verificada por Apple, así que macOS te pide confirmar que quieres abrirla. Solo lo haces una vez.</p>
+          <div class="callout">
+            <h3>¿Es seguro abrirla?</h3>
+            <p>Sí. El aviso no dice que Sauri tenga un problema: dice que Apple todavía no la ha revisado. Si la descargaste desde esta página, puedes abrirla con tranquilidad y, si quieres, comprobar que el archivo es el original con su huella en <a href="#descargar">Descargar</a>.</p>
+          </div>
+        </div>
+
+        <ol class="install__steps">
+          <li class="install__step reveal">
+            <svg class="install__art" viewBox="0 0 320 180" role="img" aria-labelledby="art1">
+              <title id="art1">Ventana del archivo descargado: a la izquierda el ícono de Sauri, una flecha y a la derecha la carpeta Aplicaciones.</title>
+              <rect class="art-window" x="8" y="8" width="304" height="164" rx="12"/>
+              <circle class="art-dot" cx="26" cy="24" r="4"/><circle class="art-dot" cx="40" cy="24" r="4"/><circle class="art-dot" cx="54" cy="24" r="4"/>
+              <use href="#sauri-mark" x="54" y="62" width="64" height="64"/>
+              <text class="art-label" x="86" y="148" text-anchor="middle">Sauri</text>
+              <path class="art-arrow" d="M134 94h46m-10-10 10 10-10 10"/>
+              <path class="art-folder" d="M204 70h22l8 8h38a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6h-68a6 6 0 0 1-6-6V76a6 6 0 0 1 6-6Z"/>
+              <text class="art-label" x="238" y="148" text-anchor="middle">Aplicaciones</text>
+              <use class="art-pointer" href="#i-pointer" x="100" y="100" width="26" height="26"/>
+            </svg>
+            <div class="install__text">
+              <span class="install__number" aria-hidden="true">1</span>
+              <h3>Arrastra Sauri a Aplicaciones</h3>
+              <p>Haz doble clic en el archivo que descargaste. En la ventana que se abre, arrastra el ícono de Sauri a la carpeta Aplicaciones.</p>
+            </div>
+          </li>
+          <li class="install__step reveal">
+            <svg class="install__art" viewBox="0 0 320 180" role="img" aria-labelledby="art2">
+              <title id="art2">Aviso de macOS sobre Sauri, con dos botones abajo.</title>
+              <rect class="art-backdrop" x="8" y="8" width="304" height="164" rx="12"/>
+              <rect class="art-window" x="80" y="20" width="160" height="140" rx="14"/>
+              <use href="#sauri-mark" x="140" y="32" width="40" height="40"/>
+              <circle class="art-warn" cx="176" cy="68" r="9"/>
+              <path class="art-warn-mark" d="M176 63v5m0 3.5v.5"/>
+              <rect class="art-line" x="100" y="84" width="120" height="8" rx="4"/>
+              <rect class="art-line art-line--soft" x="108" y="98" width="104" height="6" rx="3"/>
+              <rect class="art-line art-line--soft" x="116" y="110" width="88" height="6" rx="3"/>
+              <rect class="art-button" x="96" y="128" width="60" height="20" rx="6"/>
+              <rect class="art-button" x="164" y="128" width="60" height="20" rx="6"/>
+            </svg>
+            <div class="install__text">
+              <span class="install__number" aria-hidden="true">2</span>
+              <h3>Intenta abrirla</h3>
+              <p>Abre Sauri desde la carpeta Aplicaciones. macOS te avisa que no puede comprobar la app y no la abre todavía. Cierra el aviso, sin mover Sauri a la Papelera.</p>
+            </div>
+          </li>
+          <li class="install__step reveal">
+            <svg class="install__art" viewBox="0 0 320 180" role="img" aria-labelledby="art3">
+              <title id="art3">Configuración del Sistema con la opción Privacidad y seguridad marcada en la barra lateral.</title>
+              <rect class="art-window" x="8" y="8" width="304" height="164" rx="12"/>
+              <path class="art-sidebar" d="M20 8h96v164H20a12 12 0 0 1-12-12V20A12 12 0 0 1 20 8Z"/>
+              <circle class="art-dot" cx="26" cy="24" r="4"/><circle class="art-dot" cx="40" cy="24" r="4"/><circle class="art-dot" cx="54" cy="24" r="4"/>
+              <rect class="art-line art-line--soft" x="20" y="44" width="72" height="6" rx="3"/>
+              <rect class="art-line art-line--soft" x="20" y="62" width="60" height="6" rx="3"/>
+              <rect class="art-line art-line--soft" x="20" y="80" width="66" height="6" rx="3"/>
+              <rect class="art-pick" x="14" y="94" width="96" height="40" rx="8"/>
+              <text class="art-pick-label" x="22" y="110">Privacidad</text>
+              <text class="art-pick-label" x="22" y="125">y seguridad</text>
+              <rect class="art-line art-line--soft" x="20" y="146" width="56" height="6" rx="3"/>
+              <rect class="art-line" x="136" y="36" width="120" height="10" rx="5"/>
+              <rect class="art-panel" x="136" y="58" width="160" height="40" rx="8"/>
+              <rect class="art-panel" x="136" y="106" width="160" height="52" rx="8"/>
+              <use class="art-pointer" href="#i-pointer" x="88" y="118" width="26" height="26"/>
+            </svg>
+            <div class="install__text">
+              <span class="install__number" aria-hidden="true">3</span>
+              <h3>Ve a Privacidad y seguridad</h3>
+              <p>Abre el menú Apple (arriba a la izquierda) y elige «Configuración del Sistema». En algunos Mac se llama «Ajustes del Sistema». En la barra lateral, haz clic en «Privacidad y seguridad» y baja hasta la parte «Seguridad».</p>
+            </div>
+          </li>
+          <li class="install__step reveal">
+            <svg class="install__art" viewBox="0 0 320 180" role="img" aria-labelledby="art4">
+              <title id="art4">La parte Seguridad con el aviso sobre Sauri y el botón Abrir de todos modos resaltado.</title>
+              <rect class="art-window" x="8" y="8" width="304" height="164" rx="12"/>
+              <text class="art-heading" x="28" y="42">Seguridad</text>
+              <rect class="art-panel" x="24" y="56" width="272" height="100" rx="10"/>
+              <use href="#sauri-mark" x="40" y="72" width="28" height="28"/>
+              <rect class="art-line" x="80" y="76" width="150" height="8" rx="4"/>
+              <rect class="art-line art-line--soft" x="80" y="90" width="120" height="6" rx="3"/>
+              <rect class="art-focus" x="134" y="111" width="150" height="34" rx="10"/>
+              <rect class="art-cta" x="138" y="115" width="142" height="26" rx="7"/>
+              <text class="art-cta-label" x="209" y="132" text-anchor="middle">Abrir de todos modos</text>
+              <use class="art-pointer" href="#i-pointer" x="262" y="134" width="26" height="26"/>
+            </svg>
+            <div class="install__text">
+              <span class="install__number" aria-hidden="true">4</span>
+              <h3>Haz clic en «Abrir de todos modos»</h3>
+              <p>Junto al aviso sobre Sauri verás ese botón; en algunos Mac dice «Abrir igualmente». Si macOS te vuelve a preguntar, elige la misma opción. El botón aparece durante cerca de una hora después del paso 2; si ya no está, repite ese paso.</p>
+            </div>
+          </li>
+          <li class="install__step reveal">
+            <svg class="install__art" viewBox="0 0 320 180" role="img" aria-labelledby="art5">
+              <title id="art5">Ventana para escribir la contraseña del Mac, con el botón OK.</title>
+              <rect class="art-backdrop" x="8" y="8" width="304" height="164" rx="12"/>
+              <rect class="art-window" x="70" y="20" width="180" height="140" rx="14"/>
+              <rect class="art-lock" x="148" y="44" width="24" height="20" rx="4"/>
+              <path class="art-lock-arc" d="M152 44v-6a8 8 0 0 1 16 0v6"/>
+              <rect class="art-line art-line--soft" x="100" y="76" width="120" height="6" rx="3"/>
+              <rect class="art-field" x="92" y="92" width="136" height="24" rx="6"/>
+              <text class="art-dots" x="104" y="110">••••••••</text>
+              <rect class="art-cta" x="172" y="126" width="56" height="22" rx="6"/>
+              <text class="art-cta-label" x="200" y="141" text-anchor="middle">OK</text>
+              <use class="art-pointer" href="#i-pointer" x="208" y="136" width="26" height="26"/>
+            </svg>
+            <div class="install__text">
+              <span class="install__number" aria-hidden="true">5</span>
+              <h3>Confirma con tu contraseña</h3>
+              <p>Escribe la contraseña con la que entras a tu Mac y haz clic en «OK». Sauri se abre y, desde ahora, la abres con doble clic como cualquier otra app.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="primeros-pasos" aria-labelledby="setup-title">
+      <div class="container">
+        <header class="section__header">
+          <h2 id="setup-title">Tus primeros minutos con Sauri</h2>
+          <p class="section__intro">La primera vez que la abres, Sauri te acompaña a dejarla lista. No necesitas correo ni contraseña.</p>
+        </header>
+        <ol class="setup">
+          <li class="setup__step reveal">
+            <div class="setup__rail" aria-hidden="true"><svg class="icon-tile" aria-hidden="true"><use href="#i-folder-open"/></svg></div>
+            <h3>Configura Sauri</h3>
+            <p>Sauri comprueba que tu Mac tenga lo necesario, te pregunta tu nombre y te deja elegir dónde guardar tus reuniones. Puedes usar las carpetas que te propone o elegir otras, también en un disco externo.</p>
+          </li>
+          <li class="setup__step reveal">
+            <div class="setup__rail" aria-hidden="true"><svg class="icon-tile" aria-hidden="true"><use href="#i-models"/></svg></div>
+            <h3>Sauri instala los modelos</h3>
+            <p>Sauri elige e instala por su cuenta los modelos que mejor funcionan en tu Mac para transcribir, reconocer voces y resumir; no tienes que escoger nada. Ocupan entre 4 y 8 GB según la memoria de tu Mac, así que la descarga puede tardar unos minutos.</p>
+            <p class="setup__note"><svg aria-hidden="true"><use href="#i-clock"/></svg>Se descargan una sola vez.</p>
+          </li>
+          <li class="setup__step reveal">
+            <div class="setup__rail" aria-hidden="true"><svg class="icon-tile" aria-hidden="true"><use href="#i-plug"/></svg></div>
+            <h3>Conecta la extensión</h3>
+            <p>Agrega la extensión a Chrome y ábrela una vez: se conecta sola con Sauri en tu Mac y la app te avisa cuando quedó conectada. Si prefieres, la conectas más tarde.</p>
+          </li>
+        </ol>
+
+        <div class="uninstall" id="desinstalar">
+          <div class="uninstall__head">
+            <svg class="icon-tile icon-tile--quiet" aria-hidden="true"><use href="#i-trash"/></svg>
+            <h3>Si quieres quitar Sauri</h3>
+          </div>
+          <div class="uninstall__body">
+            <p>Abre Sauri y, en su menú, elige «Desinstalar Sauri…». Te pregunta aparte qué hacer con tus carpetas de grabaciones; si no eliges nada, se conservan.</p>
+            <p><strong>Si Sauri ya no abre:</strong> arrástrala desde la carpeta Aplicaciones a la Papelera. Luego, en el Finder, elige el menú «Ir» y después «Ir a la carpeta…», escribe <code>~/Library/Application Support/Sauri</code> y mueve esa carpeta a la Papelera. Haz lo mismo con <code>~/Library/Logs/Sauri</code>. Tus carpetas de grabaciones siguen donde las elegiste; bórralas tú si ya no las quieres. Para quitar la extensión, ábrela en la página de extensiones de Chrome y quítala.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tinted" id="preguntas" aria-labelledby="faq-title">
+      <div class="container faq">
+        <div class="faq__lead">
+          <h2 id="faq-title">Preguntas frecuentes</h2>
+          <p>¿No encuentras tu respuesta? <a href="https://github.com/lufermalgo/sauri-app/issues">Escríbenos en la página de ayuda</a>.</p>
+        </div>
+        <div class="faq__list">
+          <details>
+            <summary>¿Mis reuniones se suben a internet?</summary>
+            <p>No. Sauri las procesa en tu Mac. Solo sale algo si tú conectas un servicio externo para una tarea, y Sauri te avisa antes.</p>
+          </details>
+          <details>
+            <summary>¿Qué reuniones puedo grabar?</summary>
+            <p>Cualquier reunión que tengas abierta en una pestaña de Chrome, como Google Meet. También puedes subir grabaciones que ya tengas.</p>
+          </details>
+          <details>
+            <summary>¿Debo avisar a los participantes?</summary>
+            <p>Sí. Pide permiso antes de grabar, como harías con cualquier grabadora.</p>
+          </details>
+          <details>
+            <summary>¿Qué necesito para usarla?</summary>
+            <p>Un Mac con chip de Apple (M1 o posterior) y macOS 14 Sonoma o posterior, además de Google Chrome para grabar. Los detalles están en <a href="#descargar">Descargar</a>.</p>
+          </details>
+          <details>
+            <summary>¿Por qué macOS me avisa al abrir Sauri?</summary>
+            <p>Porque Sauri todavía no está verificada por Apple. Puedes abrirla igual siguiendo los <a href="#instalar">pasos para la primera vez</a>; solo lo haces una vez.</p>
+          </details>
+          <details>
+            <summary>¿Dónde consigo la extensión de Chrome?</summary>
+            <p>En Chrome Web Store. La enviamos y está en revisión; cuando la aprueben, el botón para agregarla aparecerá en <a href="#descargar">Descargar</a>. Mientras tanto, puedes usar Sauri con grabaciones que ya tengas.</p>
+          </details>
+          <details>
+            <summary>¿En qué idiomas funciona?</summary>
+            <p>La aplicación está en español e inglés, y transcribe reuniones en esos idiomas.</p>
+          </details>
+          <details>
+            <summary>¿Puedo corregir los nombres de los hablantes?</summary>
+            <p>Sí. Puedes renombrar a cualquier hablante en cualquier momento, y Sauri usa tus correcciones en tus siguientes reuniones.</p>
+          </details>
+          <details>
+            <summary>¿Sauri ya es una versión final?</summary>
+            <p>Todavía no. La usamos a diario y la mejoramos cada semana. Cuando hay una versión nueva, Sauri te pregunta antes de instalarla.</p>
+          </details>
+          <details>
+            <summary>¿Qué significa el nombre Sauri?</summary>
+            <p>Sauri es un nombre propio, corto y fácil de decir. Su significado está en el logo: dos voces distintas y, en el centro, lo que Sauri conserva de la conversación para que puedas encontrarlo y revisarlo después.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section closing" id="acceso" aria-labelledby="cta-title">
+      <div class="container closing__inner" data-download-group>
+        <svg class="closing__mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#sauri-mark"/></svg>
+        <h2 id="cta-title">Tus reuniones, en tu Mac</h2>
+        <p>Descarga Sauri y deja que haga el trabajo pesado.</p>
+        <a class="button button--ink button--lg" data-download-url data-ready-label="Descargar para Mac" aria-disabled="true">
+          <svg class="button__icon" aria-hidden="true"><use href="#i-download"/></svg><span data-label>Disponible pronto</span>
+        </a>
+        <p class="download-started" data-download-note role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <img class="site-footer__mark" src="assets/brand/sauri-isotype.svg" alt="" width="28" height="28">
+        <p>Sauri está en desarrollo. Hecha para Mac con chip de Apple.</p>
+      </div>
+      <nav aria-label="Pie de página">
+        <a href="#descargar">Descargar</a>
+        <a href="#instalar">Instalar</a>
+        <a href="#preguntas">Preguntas</a>
+        <a href="https://github.com/lufermalgo/sauri-app/releases">Todas las versiones</a>
+        <a href="https://github.com/lufermalgo/sauri-app/issues">Ayuda</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="release.js" defer></script>
+  <script src="motion.js" defer></script>
+</body>
+</html>
